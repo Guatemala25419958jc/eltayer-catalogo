@@ -1,6 +1,6 @@
 /* Edita aquí el número, los enlaces y las 40 piezas del catálogo. Fotografías conceptuales. */
 const ELTAYER = {
-  whatsapp: '521XXXXXXXXXX',
+  whatsapp: '50254652890',
   collections: [
     {id:'sala',name:'SALA',caption:'Comodidad con carácter.',products:[
       ['Sofá Origen','Líneas serenas y proporciones generosas para compartir cada día.','Lino marfil · Estructura de madera · Cojines amplios'],
