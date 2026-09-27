@@ -23,3 +23,28 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#nav').classList
 $('#year').textContent=new Date().getFullYear();
 function restoreHash(){const id=location.hash.replace('#coleccion-','');if(ELTAYER.collections.some(c=>c.id===id))showCollection(id);}
 window.addEventListener('hashchange',restoreHash);restoreHash();
+
+/* Animaciones: entrada del hero + aparición del bloque de leads al hacer scroll */
+requestAnimationFrame(()=>setTimeout(()=>document.querySelectorAll('.hero-copy .reveal').forEach(el=>el.classList.add('in')),80));
+const revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in');revealObserver.unobserve(entry.target);}});},{threshold:.2});
+document.querySelectorAll('.leads.reveal').forEach(el=>revealObserver.observe(el));
+
+/* Formulario captador de leads: arma el mensaje y lo envía por WhatsApp, sin guardar datos */
+const leadForm=$('#leadForm');
+if(leadForm){
+ leadForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const data=new FormData(leadForm);
+  const nombre=(data.get('nombre')||'').trim();
+  const telefono=(data.get('telefono')||'').trim();
+  const interes=data.get('interes');
+  const mensaje=(data.get('mensaje')||'').trim();
+  const note=$('#leadNote');
+  if(!nombre||!telefono){note.textContent='Por favor completa tu nombre y teléfono.';note.classList.remove('sent');return;}
+  const texto=`Hola ELTAYER, soy ${nombre}.\nMe interesa: ${interes}.\nMi teléfono: ${telefono}.${mensaje?`\nDetalle: ${mensaje}`:''}`;
+  window.open(whatsappUrl(texto),'_blank','noopener,noreferrer');
+  note.textContent='Listo, abrimos WhatsApp con tu mensaje ya redactado.';
+  note.classList.add('sent');
+  leadForm.reset();
+ });
+}
